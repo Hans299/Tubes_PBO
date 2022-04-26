@@ -25,10 +25,10 @@ text_x = 10
 text_y = 10
 
 
-background_img=pygame.image.load(os.path.join("pygame","image","background.png"))
-bullet_img=pygame.image.load(os.path.join("pygame","image","bullet.PNG"))
-player_img=pygame.image.load(os.path.join("pygame","image","player.PNG"))
-rock_img=pygame.image.load(os.path.join("pygame","image","rock.PNG"))
+background_img=pygame.image.load(os.path.join("pygame","image","background.jpg"))
+bullet_img=pygame.image.load(os.path.join("pygame","image","bullet.png"))
+player_img=pygame.image.load(os.path.join("pygame","image","player.png"))
+rock_img=pygame.image.load(os.path.join("pygame","image","rock.png"))
 
 
 class Player(pygame.sprite.Sprite):
