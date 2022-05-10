@@ -31,8 +31,8 @@ rock_img=pygame.image.load(os.path.join("image","rock.PNG"))
 
 
 class Player(pygame.sprite.Sprite):
-    def _init_(self):
-        pygame.sprite.Sprite._init_(self) 
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self) 
         self.image=pygame.transform.scale(player_img,(50,50))
         self.rect=self.image.get_rect()
         self.rect.centerx = WIDTH/2
@@ -71,8 +71,8 @@ class Player(pygame.sprite.Sprite):
 
 
 class Rock(pygame.sprite.Sprite):
-    def _init_(self):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(rock_img,(43,42))
         
         self.rect=self.image.get_rect()
@@ -94,8 +94,8 @@ class Rock(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def _init_(self,x,y):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(bullet_img,(28,42))
         self.rect=self.image.get_rect()
         self.rect.centerx=x
