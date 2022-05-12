@@ -1,13 +1,5 @@
-import csv
-import sys
-
-
-def menu():
-    print("WELCOME")
-    option = input("Start? (y/n) ")
-    if option == "y":
+class Menu :
+    class MenuAwal:
         pass
-    elif option == "n":
-        sys.exit()
-
-pass
+    class MenuAkhir:
+        pass
