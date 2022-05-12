@@ -24,7 +24,7 @@ def draw_text(surf, text, size, x, y):
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
-background_img=pygame.image.load(os.path.join("image","background.jpg"))
+background_img=pygame.image.load(os.path.join("image","background.PNG"))
 bullet_img=pygame.image.load(os.path.join("image","bullet.PNG"))
 player_img=pygame.image.load(os.path.join("image","player.PNG"))
 rock_img=pygame.image.load(os.path.join("image","rock.PNG"))
@@ -33,7 +33,7 @@ rock_img=pygame.image.load(os.path.join("image","rock.PNG"))
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self) 
-        self.image=pygame.transform.scale(player_img,(50,50))
+        self.image=pygame.transform.scale(player_img,(60,65))
         self.rect=self.image.get_rect()
         self.rect.centerx = WIDTH/2
         self.rect.bottom=HEIGHT - 20
@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         self.score_val = 0
 
     def update(self):
-        key_pressed=pygame.key.get_pressed()
+        key_pressed = pygame.key.get_pressed()
         if key_pressed[pygame.K_RIGHT]: 
             self.rect.x += self.speedx
         if key_pressed[pygame.K_LEFT]:
@@ -64,6 +64,15 @@ class Player(pygame.sprite.Sprite):
         bullet = Bullet(self.rect.centerx,self.rect.top)
         all_sprites.add(bullet)
         bullets.add(bullet)
+    
+    def doubleshoot(self):
+        bullet1 = Bullet(self.rect.centerx-20,self.rect.top)
+        all_sprites.add(bullet1)
+        bullets.add(bullet1)
+        bullet2 = Bullet(self.rect.centerx+20,self.rect.top)
+        all_sprites.add(bullet2)
+        bullets.add(bullet2)
+        
         
     def show_score(self):
         draw_text(layar, f"Score -> {self.score_val}", 24, WIDTH-450, HEIGHT-590)
@@ -76,7 +85,7 @@ class Rock(pygame.sprite.Sprite):
         self.image=pygame.transform.scale(rock_img,(43,42))
         
         self.rect=self.image.get_rect()
-        self.radius=self.rect.width*0.9/2
+        self.radius=self.rect.width*0.1/2
         self.rect.x=random.randrange(0,WIDTH-self.rect.width)
         self.rect.y=random.randrange(-50,-10)
         self.speedx=random.randrange(-1,2)
@@ -96,7 +105,7 @@ class Rock(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image=pygame.transform.scale(bullet_img,(28,42))
+        self.image=pygame.transform.scale(bullet_img,(10,50))
         self.rect=self.image.get_rect()
         self.rect.centerx=x
         self.rect.bottom=y
@@ -107,11 +116,11 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.bottom < 0:
            self.kill()
 
-def show_go_screen():
+def waiting_screen():
     layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
-    draw_text(layar, "WATCHOUT!", 70, WIDTH / 2, HEIGHT / 4)
-    draw_text(layar, "Arrow keys to move, Space key to fire", 20, WIDTH / 2, HEIGHT / 2)
-    draw_text(layar, "Press any key to play", 22, WIDTH / 2, HEIGHT * 3 / 4)
+    draw_text(layar, "WATCHOUT!", 70, WIDTH/2, HEIGHT/4)
+    draw_text(layar, "Arrow keys to move, Space key to fire", 20, WIDTH/2, HEIGHT/2)
+    draw_text(layar, "Press any key to play", 22, WIDTH/2, HEIGHT*3/4)
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -123,25 +132,14 @@ def show_go_screen():
                 waiting = False
 
 
-'''all_sprites = pygame.sprite.Group()
-rocks = pygame.sprite.Group()
-bullets = pygame.sprite.Group()
-player = Player()
-
-all_sprites.add(player)
-
-for i in range(8):
-    rock=Rock()
-    all_sprites.add(rock)
-    rocks.add(rock)'''
-
 game_over = True
 running=True
 while running:
     fps.tick(FPS)
     
+    #waiting screen ketika gameover dan akan memulai game
     if game_over:
-        show_go_screen()
+        waiting_screen()
         game_over = False
         all_sprites = pygame.sprite.Group()
         rocks = pygame.sprite.Group()
@@ -149,8 +147,9 @@ while running:
         player = Player()
 
         all_sprites.add(player)
+        
 
-        for i in range(8):
+        for i in range(4):
             rock=Rock()
             all_sprites.add(rock)
             rocks.add(rock)
@@ -165,12 +164,16 @@ while running:
                 missile_sound = mixer.Sound("./audio/missile.wav")
                 missile_sound.play()
                 player.shoot()
-            elif event.key==pygame.K_1: #cheat menambah skor dengan keyboard angka 1
+            '''elif event.key==pygame.K_1: #cheat menambah skor dengan keyboard angka 1
                 player.score_val +=1
+            elif event.key==pygame.K_3: #cheat menambah peluru menjadi 2
+                missile_sound = mixer.Sound("./audio/missile.wav")
+                missile_sound.play()
+                player.doubleshoot()
         elif event.type==pygame.KEYUP: #shortcut untuk langsung gameover
             if event.key==pygame.K_2:
-                game_over = True
-                    
+                game_over = True '''
+                   
             
     
     all_sprites.update()
@@ -182,15 +185,13 @@ while running:
         all_sprites.add(rock)
         rocks.add(rock)
         player.score_val +=1
-
-                
+ 
     hits = pygame.sprite.spritecollide(player,rocks,False,pygame.sprite.collide_circle)
     #jika pesawat terkena meteor 
     if hits:
         game_over=True        
         
-    
-    
+
     layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
     all_sprites.draw(layar)
     player.show_score()
