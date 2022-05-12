@@ -20,10 +20,10 @@ def draw_text(surf, text, size, x, y):
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
-background_img=pygame.image.load(os.path.join("image","background.png"))
-bullet_img=pygame.image.load(os.path.join("image","bullet.png"))
-player_img=pygame.image.load(os.path.join("image","player.png"))
-rock_img=pygame.image.load(os.path.join("image","rock.png"))
+background_img=pygame.image.load(os.path.join("image","background.PNG"))
+bullet_img=pygame.image.load(os.path.join("image","bullet.PNG"))
+player_img=pygame.image.load(os.path.join("image","player.PNG"))
+rock_img=pygame.image.load(os.path.join("image","rock.PNG"))
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
