@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+import math
 from pygame import mixer
 
 FPS=60
@@ -12,6 +13,7 @@ pygame.init()
 layar = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("WATCHOUT!")
 fps = pygame.time.Clock()
+tittle_font = pygame.font.SysFont("dejavuserif",40)
 
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font('jupiterc.ttf', size)
@@ -19,6 +21,7 @@ def draw_text(surf, text, size, x, y):
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
+    
 
 background_img=pygame.image.load(os.path.join("image","background.PNG"))
 bullet_img=pygame.image.load(os.path.join("image","bullet.PNG"))
@@ -122,6 +125,31 @@ def waiting_screen():
             if event.type == pygame.KEYUP:
                 waiting = False
 
+def menu():
+    layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
+    draw_text(layar, "WATCHOUT!", 70, WIDTH/2, HEIGHT/4)    
+    pygame.display.flip()
+    yvar=350
+    xvar=250
+    waiting = True
+    while waiting:
+        fps.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                xpos, ypos = pygame.mouse.get_pos()
+                cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
+                if cek <= 70:
+                    waiting = False
+                    waiting_screen()
+
+        text = tittle_font.render("START", 1, (255,255,255))
+        layar.blit(text, (WIDTH/2 - text.get_width()/2, yvar-20))
+            
+        pygame.draw.circle(layar, (255,255,255), (xvar,yvar), 70,6)
+        pygame.display.update()
+
 game_over = True
 running=True
 while running:
@@ -129,6 +157,7 @@ while running:
     
     # waiting screen ketika gameover dan akan memulai game
     if game_over:
+        menu()
         waiting_screen()
         game_over = False
         all_sprites = pygame.sprite.Group()
