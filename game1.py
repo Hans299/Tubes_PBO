@@ -23,10 +23,10 @@ def draw_text(surf, text, size, x, y):
     surf.blit(text_surface, text_rect)
     
 
-background_img=pygame.image.load(os.path.join("image","background.PNG"))
-bullet_img=pygame.image.load(os.path.join("image","bullet.PNG"))
-player_img=pygame.image.load(os.path.join("image","player.PNG"))
-rock_img=pygame.image.load(os.path.join("image","rock.PNG"))
+background_img=pygame.image.load(os.path.join("image","background.png"))
+bullet_img=pygame.image.load(os.path.join("image","bullet.png"))
+player_img=pygame.image.load(os.path.join("image","player.png"))
+rock_img=pygame.image.load(os.path.join("image","rock.png"))
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -144,12 +144,38 @@ def menu():
                     waiting = False
                     waiting_screen()
 
+
         text = tittle_font.render("START", 1, (255,255,255))
         layar.blit(text, (WIDTH/2 - text.get_width()/2, yvar-20))
             
         pygame.draw.circle(layar, (255,255,255), (xvar,yvar), 70,6)
         pygame.display.update()
 
+def menuGameOver():
+    layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
+    draw_text(layar, "Game Over", 70, WIDTH/2, HEIGHT/4)    
+    pygame.display.flip()
+    yvar=350
+    xvar=250
+    waiting = True
+    while waiting:
+        fps.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                xpos, ypos = pygame.mouse.get_pos()
+                cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
+                if cek <= 70:
+                    waiting = False
+                    waiting_screen()
+
+
+        text = tittle_font.render("START", 1, (255,255,255))
+        layar.blit(text, (WIDTH/2 - text.get_width()/2, yvar-20))
+            
+        pygame.draw.circle(layar, (255,255,255), (xvar,yvar), 70,6)
+        pygame.display.update()
 game_over = True
 running=True
 while running:
@@ -157,7 +183,7 @@ while running:
     
     # waiting screen ketika gameover dan akan memulai game
     if game_over:
-        menu()
+        menuGameOver()
         waiting_screen()
         game_over = False
         all_sprites = pygame.sprite.Group()
