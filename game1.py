@@ -1,20 +1,19 @@
 import pygame
 import random
 import os
+import math
 from pygame import mixer
-
 
 FPS=60
 WIDTH=500
 HEIGHT=600
 GREEN = (0, 255, 0)
 
-
 pygame.init()
 layar = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("WATCHOUT!")
 fps = pygame.time.Clock()
-
+tittle_font = pygame.font.SysFont("dejavuserif",40)
 
 def draw_text(surf, text, size, x, y):
     font = pygame.font.Font('jupiterc.ttf', size)
@@ -22,13 +21,12 @@ def draw_text(surf, text, size, x, y):
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
+    
 
-
-background_img=pygame.image.load(os.path.join("image","background.PNG"))
-bullet_img=pygame.image.load(os.path.join("image","bullet.PNG"))
-player_img=pygame.image.load(os.path.join("image","player.PNG"))
-rock_img=pygame.image.load(os.path.join("image","rock.PNG"))
-
+background_img=pygame.image.load(os.path.join("image","background.png"))
+bullet_img=pygame.image.load(os.path.join("image","bullet.png"))
+player_img=pygame.image.load(os.path.join("image","player.png"))
+rock_img=pygame.image.load(os.path.join("image","rock.png"))
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -73,15 +71,10 @@ class Player(pygame.sprite.Sprite):
         all_sprites.add(bullet2)
         bullets.add(bullet2)
         
+        
     def show_score(self):
         draw_text(layar, f"Score -> {self.score_val}", 24, WIDTH-450, HEIGHT-590)
-     
-class Player1(Player):
-    def __init__(self):
-        Player.__init__(self)
-    
-    
-
+        
 class Rock(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -94,7 +87,6 @@ class Rock(pygame.sprite.Sprite):
         self.speedx=random.randrange(-1,2)
         self.speedy=random.randrange(1,2)
         
-
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
@@ -103,7 +95,6 @@ class Rock(pygame.sprite.Sprite):
             self.rect.y=random.randrange(-100,-40)
             self.speedx=random.randrange(-3,3)
             self.speedy=random.randrange(2,8)
-
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,x,y):
@@ -118,45 +109,9 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y += self.speedy
         if self.rect.bottom < 0:
            self.kill()
-
+#Tampilan kedua setelah menu()
 def waiting_screen():
     layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
-    draw_text(layar, "WATCHOUT!", 70, WIDTH/2, HEIGHT/4) 
-       
-    #pygame.display.flip()
-    #yvar=350
-    #xvar=250
-    #score = tittle_font.render(f"Your score : {player.score_val}", 1, (GREEN))
-    #ayar.blit(score, (WIDTH/2 - score.get_width()/2, yvar-120))
-    
-    draw_text(layar, "Enter to", 30, WIDTH/2, 310)
-    draw_text(layar, "START", 40, WIDTH/2, 350)
-            
-    pygame.draw.circle(layar, (GREEN), (250,350), 70,6)
-    pygame.display.update()
-    waiting = True
-    while waiting:
-        fps.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RETURN: 
-                    layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
-                    draw_text(layar, "WATCHOUT!", 70, WIDTH/2, HEIGHT/4)
-                    draw_text(layar, "Arrow keys to move, Space key to fire", 20, WIDTH/2, HEIGHT/2)
-                    draw_text(layar, "Press any key to play", 22, WIDTH/2, HEIGHT*3/4)
-                    pygame.display.flip()
-                    waiting = True
-                    while waiting:
-                        fps.tick(FPS)
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                pygame.quit()
-                            if event.type == pygame.KEYUP:
-                                waiting = False
-                                
-    '''layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
     draw_text(layar, "WATCHOUT!", 70, WIDTH/2, HEIGHT/4)
     draw_text(layar, "Arrow keys to move, Space key to fire", 20, WIDTH/2, HEIGHT/2)
     draw_text(layar, "Press any key to play", 22, WIDTH/2, HEIGHT*3/4)
@@ -168,18 +123,70 @@ def waiting_screen():
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYUP:
-                waiting = False'''
+                waiting = False
+#Tampilan awal
+def menu():
+    layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
+    draw_text(layar, "WATCHOUT!", 70, WIDTH/2, HEIGHT/4)    
+    pygame.display.flip()
+    yvar=350
+    xvar=250
+    waiting = True
+    while waiting:
+        fps.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                xpos, ypos = pygame.mouse.get_pos()
+                cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
+                if cek <= 70:
+                    waiting = False
+                    game_over = True
+                    running = True
+                    waiting_screen()
+                    return False
 
+        draw_text(layar, "START", 60, WIDTH/2, yvar-30)
+            
+        pygame.draw.circle(layar, (GREEN), (xvar,yvar), 70,6)
+        pygame.display.update()
 
+#Tampilan ketika GameOver
+def menuGameOver():
+    layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
+    draw_text(layar, "Game Over", 70, WIDTH/2, HEIGHT/4)    
+    pygame.display.flip()
+    yvar=350
+    xvar=250
+    waiting = True
+    while waiting:
+        fps.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                xpos, ypos = pygame.mouse.get_pos()
+                cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
+                if cek <= 70:
+                    player.score_val = 0
+                    waiting = False
+
+        draw_text(layar, "START", 60, WIDTH/2, yvar-30)
+
+        score = tittle_font.render(f"Your score : {player.score_val}", 1, (GREEN))
+        layar.blit(score, (WIDTH/2 - score.get_width()/2, yvar-120))
+            
+        pygame.draw.circle(layar, (GREEN), (xvar,yvar), 70,6)
+        pygame.display.update()
 game_over = True
 running=True
 while running:
     fps.tick(FPS)
     
-        
-    #waiting screen ketika gameover dan akan memulai game
+    # waiting screen ketika gameover dan akan memulai game
     if game_over:
-        waiting_screen()
+        menu()
         game_over = False
         all_sprites = pygame.sprite.Group()
         rocks = pygame.sprite.Group()
@@ -188,19 +195,17 @@ while running:
 
         all_sprites.add(player)
         
-
         for i in range(4):
             rock=Rock()
             all_sprites.add(rock)
             rocks.add(rock)
         player.score_val = 0
      
-    
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             running=False
         elif event.type==pygame.KEYDOWN:
-            if event.key==pygame.K_SPACE: #keyboard spasi untuk menembak
+            if event.key==pygame.K_SPACE: # keyboard spasi untuk menembak
                 missile_sound = mixer.Sound("./audio/missile.wav")
                 missile_sound.play()
                 player.shoot()
@@ -214,25 +219,21 @@ while running:
             if event.key==pygame.K_2:
                 game_over = True '''
                    
-            
-    
     all_sprites.update()
     hits=pygame.sprite.groupcollide(rocks,bullets,True,True)
     
-
     for hit in hits:
         rock=Rock()
         all_sprites.add(rock)
         rocks.add(rock)
         player.score_val +=1
-    
-    
  
     hits = pygame.sprite.spritecollide(player,rocks,False,pygame.sprite.collide_circle)
-    #jika pesawat terkena meteor 
+    # jika pesawat terkena meteor 
     if hits:
-        game_over=True        
-        
+        menuGameOver()  
+        game_over = True
+        running = True      
 
     layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
     all_sprites.draw(layar)
