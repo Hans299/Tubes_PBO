@@ -1,25 +1,51 @@
-# Tubes_PBO
-# WATCHOUT!
+> Containerize Pygame with Docker.
 
-## Dependencies:
-pygame (https://www.pygame.org/) - Python game library
-abc (Abstract Base Class) (Built-in)
-typing (Type Hinting) (Built-in)
+## Nama dan NIM Anggota Kelompok
+| Nama | NIM | Github |
+| :---: | :---: | :---: |
+| Faisal Khairul Fasha       | 120140158 | [faisalkfa](https://github.com/faisalkfa)                 |
+| Faustine Elvaretta Tambila | 120140157 | [Faustineelvaretta](https://github.com/Faustineelvaretta) |
+| Muhammad Hadi Arsa         | 120140150 | [HadiAr20](https://github.com/HadiAr20)                   |
+| Syafira Wulandari          | 120140142 | [syafirawulandari](https://github.com/syafirawulandari)   |
+| Hans Bonatua Batubara      | 120140131 | [Hans299](https://github.com/Hans299)                     |
+| Indra Jaya Putra           | 120140059 | [indraphy](https://github.com/indraphy)                   |
 
-## How to play:
-Press `←` to move left.
-Press `→` to move right.
-Press `↑` to move up.
-Press `↓` to move up.
-Press `SPACE` or `MOUSE LEFT CLICK` to fire.
+## Dendam Si Tikus
+#### Deskripsi Projek
+Aplikasi ini merupakan permainan yang dibuat menggunakan library pygame tentang sebuah rocket yang bertahan dan melewati asteroid sambil menghindar dan menghancurkan asteroid dan rocket lain dan ketika 
+rocket tekena dengan serangan dari rocket atau serangan asteroid.
 
-## Installation:
-1. Install Python 3.8+ (https://www.python.org/downloads/)
-2. Create a new Python 3 virtual environment (https://docs.python.org/3/tutorial/venv.html)
-    - If you already have a Python 3 virtual environment, you can use it.
-    - "python -m venv venv" creates a new virtual environment in the current directory.
-3. Activate the virtual environment:
-    - "source venv/bin/activate" or "venv/Scripts/activate"
-    - "deactivate" to deactivate the virtual environment.
-4. Run the game:
-    - "python game1.py"
+## Cara Menjalankan Kontainer
+Clone repositori ini atau [unduh disini]() lalu pindahkan pygame scripts ke folder `~/Downloads` seperti pada gambar berikut:
+
+Selanjutnya buka terminal pada direktori folder tersebut lalu jalankan perintah build seperti berikut:
+
+    make build-HandsOnDocker
+
+lalu pastikan ada repositori "HandsOnDocker" pada docker, dengan cara jalankan command images untuk melihat daftar images pada local storage seperti berikut:
+
+    docker images
+
+Jika proses build telah selesai, jalankan perintah run seperti berikut:
+
+untuk Windows
+
+    make run-windows
+
+untuk Linux
+
+    make run-linux
+
+untuk Mac
+
+    make run-mac
+
+Langkah terakhir yaitu menjalankan pygame melalui container yang telah kita buat dengan perintah seperti berikut:
+
+    python3 -m main.py
+
+## Video Demo Kontainer
+
+[![LIHAT VIDEO DISINI]()]()
+
+KLIK GAMBAR UNTUK MELIHAT VIDEO
