@@ -1,4 +1,5 @@
-> Containerize Pygame with Docker.
+> Tugas Besar Matakuliah Pemograman Berbasis Objek (PBO)
+> Nama Game : watchout
 
 ## Nama dan NIM Anggota Kelompok
 | Nama | NIM | Github |
