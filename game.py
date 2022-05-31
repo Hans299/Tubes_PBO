@@ -19,8 +19,8 @@ fps = pygame.time.Clock()
 tittle_font = pygame.font.SysFont("dejavuserif",40)
 
 class Player(pygame.sprite.Sprite):
-    def _init_(self):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image.player,(60,65))
         self.rect=self.image.get_rect()
         self.rect.centerx = WIDTH/2
@@ -66,8 +66,8 @@ class Player(pygame.sprite.Sprite):
         draw_text(layar, f"Score -> {self.score_val}", 24, WIDTH-450, HEIGHT-590)
 
 class Rock(pygame.sprite.Sprite):
-    def _init_(self):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image.rock,(43,42))
 
         self.rect=self.image.get_rect()
@@ -87,8 +87,8 @@ class Rock(pygame.sprite.Sprite):
             self.speedy=random.randrange(2,8)
 
 class Bullet(pygame.sprite.Sprite):
-    def _init_(self,position:pygame.Vector2,angle:float=-90):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self,position:pygame.Vector2,angle:float=-90):
+        pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.rotate(pygame.transform.scale(image.bullet,(10,50)),-angle+180+90)
         self.rect=self.image.get_rect()
         self.rect.midbottom=position
@@ -101,8 +101,8 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 class Healthbar(pygame.sprite.Sprite):
-    def _init_(self):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         # Create a surface with the size of the player
         self.image = pygame.Surface((WIDTH*4/5, 10))
         # Set the color of the surface
@@ -114,8 +114,8 @@ class Healthbar(pygame.sprite.Sprite):
         self.rect.bottom = 80
 
 class Boss(pygame.sprite.Sprite):
-    def _init_(self, max_health:int, attack_speed:int = 50):
-        pygame.sprite.Sprite._init_(self)
+    def __init__(self, max_health:int, attack_speed:int = 50):
+        pygame.sprite.Sprite.__init__(self)
         self.source_image = pygame.transform.rotate(
             pygame.transform.scale(image.player,(120,130)),
             -90
@@ -229,7 +229,7 @@ def menu():
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 xpos, ypos = pygame.mouse.get_pos()
-                cek = math.sqrt((xvar - xpos)*2 + (yvar - ypos)*2)
+                cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
                 if cek <= 70:
                     waiting = False
                     waiting_screen()
@@ -255,7 +255,7 @@ def menuGameOver():
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 xpos, ypos = pygame.mouse.get_pos()
-                cek = math.sqrt((xvar - xpos)*2 + (yvar - ypos)*2)
+                cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
                 if cek <= 70:
                     player.score_val = 0
                     waiting = False
