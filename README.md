@@ -10,7 +10,7 @@ typing (Type Hinting) (Built-in)
 Press `←` to move left.
 Press `→` to move right.
 Press `↑` to move up.
-Press `↓` to move up.
+Press `↓` to move down.
 Press `SPACE` or `MOUSE LEFT CLICK` to fire.
 
 ## Installation:
