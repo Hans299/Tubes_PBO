@@ -24,7 +24,7 @@ Press `SPACE` or `MOUSE LEFT CLICK` to fire.
 4. Install the dependencies:
     - "pip install -r requirements.txt"
 5. Run the game:
-    - "python game1.py"
+    - "python game.py"
 
 ## Nama dan NIM Anggota Kelompok
 | Nama | NIM | Github |
