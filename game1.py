@@ -109,6 +109,20 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.y += self.speedy
         if self.rect.bottom < 0:
            self.kill()
+
+class Healthbar(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        # Create a surface with the size of the player
+        self.image = pygame.Surface((WIDTH*4/5, 10))
+        # Set the color of the surface
+        self.image.fill((255, 0, 0))
+        # Create a rectangle with the size of the surface
+        self.rect = self.image.get_rect()
+        # Set the position of the rectangle
+        self.rect.centerx = WIDTH/2
+        self.rect.bottom = 80
+        
 #Tampilan kedua setelah menu()
 def waiting_screen():
     layar.blit(pygame.transform.scale(background_img,(500,700)),(0,0))
