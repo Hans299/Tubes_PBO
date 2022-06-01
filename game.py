@@ -112,7 +112,6 @@ class Power(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.radius=self.rect.width*0.1/2
         self.rect.x=random.randrange(0,WIDTH-self.rect.width)
-        #self.rect.y = random.randrange(-50,-10)
         self.speedy = 5
 #Atributed movement
     def update(self):
@@ -285,6 +284,7 @@ def menuGameOver():
     
     draw_text(layar, "START", 60, WIDTH/2, yvar-30)
     draw_text(layar, f"Your score : {player.score_val}", 30, WIDTH/2, 223)
+    draw_text(layar, "QUIT",40, WIDTH/2, 500) 
     pygame.draw.circle(layar, (GREEN), (xvar,yvar), 70,6)
     
     waiting = True
@@ -300,6 +300,12 @@ def menuGameOver():
                 if cek <= 70:
                     player.score_val = 0
                     waiting = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    xpos, ypos = pygame.mouse.get_pos()
+                    cek = math.sqrt((xvar - xpos)**2 + (520 - ypos)**2)
+                    if cek <= 25:
+                        pygame.quit()
+                        sys.exit()
                     
         pygame.display.update()
         
