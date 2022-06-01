@@ -40,4 +40,4 @@ Press `SPACE` or `MOUSE LEFT CLICK` to fire.
 <!-- Show UML.png from ./UML.png -->
 ### UML Diagram
 <!-- Show UML.png from ./UML.png -->
-![UML Diagram](./UML_New.png)
+![UML Diagram](./UML_Terbaru.png)
