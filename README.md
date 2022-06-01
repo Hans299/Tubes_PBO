@@ -35,3 +35,9 @@ Press `SPACE` or `MOUSE LEFT CLICK` to fire.
 | Syafira Wulandari          | 120140142 | [syafirawulandari](https://github.com/syafirawulandari)   |
 | Hans Bonatua Batubara      | 120140131 | [Hans299](https://github.com/Hans299)                     |
 | Indra Jaya Putra           | 120140059 | [indraphy](https://github.com/indraphy)                   |
+
+## UML and Development:
+<!-- Show UML.png from ./UML.png -->
+### UML Diagram
+<!-- Show UML.png from ./UML.png -->
+![UML Diagram](./UML_New.png)
