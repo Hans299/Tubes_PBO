@@ -16,7 +16,7 @@ pygame.display.set_caption("WATCHOUT!")
 fps = pygame.time.Clock()
 
 #Class Player(Class Child)
-class Player(pygame.sprite.Sprite):
+Class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image.player,(60,65))
@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
         draw_text(layar, f"Score -> {self.score_val}", 24, WIDTH-450, HEIGHT-590)
 
 #Class Bullet(Class Child)
-class Rock(pygame.sprite.Sprite):
+Class Rock(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image.rock,(43,42))
@@ -105,7 +105,7 @@ class Rock(pygame.sprite.Sprite):
             self.speedx=random.randrange(-3,3)
             self.speedy=random.randrange(2,8)
 #Class Powerup(Class Child)
-class Power(pygame.sprite.Sprite):
+Class Power(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(image.power,(20,20))
