@@ -9,13 +9,13 @@ FPS=60
 WIDTH=500
 HEIGHT=600
 GREEN = (0, 255, 0)
-
+#class pygame (Class Utama/Parent)
 pygame.init()
 layar = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("WATCHOUT!")
 fps = pygame.time.Clock()
 
-
+#Class Player(Class Child)
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.power_time = pygame.time.get_ticks()
         self.last_shot = pygame.time.get_ticks()
         self.shoot_delay = 250
-
+    #artibuted movement
     def update(self):
         
         if self.power >= 2 and pygame.time.get_ticks() - self.power_time > 5000:
@@ -84,6 +84,7 @@ class Player(pygame.sprite.Sprite):
     def show_score(self):
         draw_text(layar, f"Score -> {self.score_val}", 24, WIDTH-450, HEIGHT-590)
 
+#Class Bullet(Class Child)
 class Rock(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -94,7 +95,7 @@ class Rock(pygame.sprite.Sprite):
         self.rect.y=random.randrange(-50,-10)
         self.speedx=random.randrange(-1,2)
         self.speedy=random.randrange(1,2)
-
+#Atributed movement
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
@@ -103,7 +104,7 @@ class Rock(pygame.sprite.Sprite):
             self.rect.y=random.randrange(-100,-40)
             self.speedx=random.randrange(-3,3)
             self.speedy=random.randrange(2,8)
-
+#Class Powerup(Class Child)
 class Power(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -113,13 +114,13 @@ class Power(pygame.sprite.Sprite):
         self.rect.x=random.randrange(0,WIDTH-self.rect.width)
         #self.rect.y = random.randrange(-50,-10)
         self.speedy = 5
-
+#Atributed movement
     def update(self):
         self.rect.y += self.speedy
         # kill if it moves off the top of the screen
         if self.rect.top > HEIGHT:
             self.kill()
-
+#Class Bullet(Class Child)
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,position:pygame.Vector2,angle:float=-90):
         pygame.sprite.Sprite.__init__(self)
@@ -133,7 +134,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.midbottom += self.velocity
         if self.rect.bottom < 0 or self.rect.top > HEIGHT or self.rect.left > WIDTH or self.rect.right < 0:
             self.kill()
-
+#Class Healthbar(Class Child)
+#Implementasi Enkapsulasi
 class Healthbar(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -142,7 +144,7 @@ class Healthbar(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH/2
         self.rect.bottom = 80
-
+#Class Boss(Class Child)
 class Boss(pygame.sprite.Sprite):
     def __init__(self, max_health:int, attack_speed:int = 50):
         pygame.sprite.Sprite.__init__(self)
@@ -162,7 +164,7 @@ class Boss(pygame.sprite.Sprite):
         self.tick = 0
         self.alt = False
         self.attack_speed = attack_speed
-
+#Static Method
     @property
     def health(self):
         return self._health
