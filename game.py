@@ -1,10 +1,9 @@
 import math
-import pygame
+import pygame, sys
+pygame.init()
 import random
 import image
 import sound
-
-from pygame import mixer
 from helper import draw_text
 
 FPS=60
@@ -16,7 +15,7 @@ pygame.init()
 layar = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("WATCHOUT!")
 fps = pygame.time.Clock()
-tittle_font = pygame.font.SysFont("dejavuserif",40)
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -27,6 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.bottom=HEIGHT - 20
         self.speedx = 8
         self.score_val = 0
+        self.life = 5
 
     def update(self):
         key_pressed = pygame.key.get_pressed()
@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.top  = 0
 
     def shoot(self):
-        bullet = Bullet(pygame.Vector2(self.rect.centerx-20,self.rect.top))
+        bullet = Bullet(pygame.Vector2(self.rect.centerx,self.rect.top))
         all_sprites.add(bullet)
         bullets.add(bullet)
         sound.missile.play()
@@ -61,6 +61,11 @@ class Player(pygame.sprite.Sprite):
         bullet2 = Bullet(pygame.Vector2(self.rect.centerx+20,self.rect.top))
         all_sprites.add(bullet2)
         bullets.add(bullet2)
+        sound.missile.play()
+    
+        
+    def show_lifepoints(self):
+        draw_text(layar, f"life points -> {self.life}", 24, WIDTH-70, HEIGHT-590)
 
     def show_score(self):
         draw_text(layar, f"Score -> {self.score_val}", 24, WIDTH-450, HEIGHT-590)
@@ -103,23 +108,16 @@ class Bullet(pygame.sprite.Sprite):
 class Healthbar(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        # Create a surface with the size of the player
         self.image = pygame.Surface((WIDTH*4/5, 10))
-        # Set the color of the surface
         self.image.fill((255, 0, 0))
-        # Create a rectangle with the size of the surface
         self.rect = self.image.get_rect()
-        # Set the position of the rectangle
         self.rect.centerx = WIDTH/2
         self.rect.bottom = 80
 
 class Boss(pygame.sprite.Sprite):
     def __init__(self, max_health:int, attack_speed:int = 50):
         pygame.sprite.Sprite.__init__(self)
-        self.source_image = pygame.transform.rotate(
-            pygame.transform.scale(image.player,(120,130)),
-            -90
-        )
+        self.source_image = pygame.transform.rotate(pygame.transform.scale(image.player,(120,130)),-90)
         self._angle = 180
         self.image = pygame.transform.rotate(self.source_image, self.angle)
         self.rect=self.image.get_rect()
@@ -164,8 +162,7 @@ class Boss(pygame.sprite.Sprite):
         if self.health <= 0:
             self.kill()
             self.healthbar.kill()
-            # sound.explosion.play()
-            # self.explosion()
+
 
     def shoot(self):
         self.alt = not self.alt
@@ -175,10 +172,9 @@ class Boss(pygame.sprite.Sprite):
             bullet = Bullet(pygame.Vector2(self.rect.centerx+30,self.rect.bottom), -self.angle)
         all_sprites.add(bullet)
         hazard.add(bullet)
-        print('Boss shoot angle', self.angle)
+        
 
     def update(self):
-        # Always face the player
         self.rect.y += self.move_in.y
         if self.move_in.y > 0:
             self.move_in.y *= 0.95
@@ -194,7 +190,6 @@ class Boss(pygame.sprite.Sprite):
             self.tick = 0
             self.shoot()
 
-    # Before killed
     def kill(self):
         self.healthbar.kill()
         return super().kill()
@@ -212,6 +207,7 @@ def waiting_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
             if event.type == pygame.KEYUP:
                 waiting = False
 #Tampilan awal
@@ -221,12 +217,17 @@ def menu():
     pygame.display.flip()
     yvar=350
     xvar=250
+    draw_text(layar, "START", 60, WIDTH/2, yvar-30) 
+    draw_text(layar, "QUIT",40, WIDTH/2, 500)  
+    pygame.draw.circle(layar, (GREEN), (xvar,yvar), 70,6)
+    
     waiting = True
     while waiting:
         fps.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 xpos, ypos = pygame.mouse.get_pos()
                 cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
@@ -234,50 +235,51 @@ def menu():
                     waiting = False
                     waiting_screen()
                     return False
-
-        draw_text(layar, "START", 60, WIDTH/2, yvar-30)
-            
-        pygame.draw.circle(layar, (GREEN), (xvar,yvar), 70,6)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                xpos, ypos = pygame.mouse.get_pos()
+                cek = math.sqrt((xvar - xpos)**2 + (520 - ypos)**2)
+                if cek <= 25:
+                    pygame.quit()
+                    sys.exit()
         pygame.display.update()
 
 #Tampilan ketika GameOver
 def menuGameOver():
     layar.blit(pygame.transform.scale(image.background,(500,700)),(0,0))
     draw_text(layar, "Game Over", 70, WIDTH/2, HEIGHT/4)    
-    pygame.display.flip()
+
     yvar=350
     xvar=250
+    
+    draw_text(layar, "START", 60, WIDTH/2, yvar-30)
+    draw_text(layar, f"Your score : {player.score_val}", 30, WIDTH/2, 223)
+    pygame.draw.circle(layar, (GREEN), (xvar,yvar), 70,6)
+    
     waiting = True
     while waiting:
         fps.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 xpos, ypos = pygame.mouse.get_pos()
                 cek = math.sqrt((xvar - xpos)**2 + (yvar - ypos)**2)
                 if cek <= 70:
                     player.score_val = 0
                     waiting = False
-
-        draw_text(layar, "START", 60, WIDTH/2, yvar-30)
-
-        score = tittle_font.render(f"Your score : {player.score_val}", 1, (GREEN))
-        layar.blit(score, (WIDTH/2 - score.get_width()/2, yvar-120))
-            
-        pygame.draw.circle(layar, (GREEN), (xvar,yvar), 70,6)
+                    
         pygame.display.update()
-
+        
 game_over = True
 running=True
-level = 1
+menu()
+hp = 0
 
 while running:
     fps.tick(FPS)
-
     # waiting screen ketika gameover dan akan memulai game
     if game_over:
-        menu()
         game_over = False
         all_sprites = pygame.sprite.Group()
         hazard = pygame.sprite.Group()
@@ -297,20 +299,20 @@ while running:
         #     test = Boss(100)
         #     all_sprites.add(test)
         #     hazard.add(test)
-
+    
     for event in pygame.event.get():
         if event.type==pygame.QUIT:
             running=False
+            pygame.quit()
+            sys.exit()
         elif event.type==pygame.KEYDOWN:
             if event.key==pygame.K_SPACE: # keyboard spasi untuk menembak
                 player.shoot()
             elif event.key==pygame.K_1: #cheat menambah skor dengan keyboard angka 1
                 player.score_val +=1
-            elif event.key==pygame.K_4: #cheat menambah skor +30 dengan keyboard angka 2
-                player.score_val +=30
+            elif event.key==pygame.K_4: #cheat menambah skor +25 dengan keyboard angka 2
+                player.score_val +=25
             elif event.key==pygame.K_3: #cheat menambah peluru menjadi 2
-                missile_sound = mixer.Sound("./audio/missile.wav")
-                missile_sound.play()
                 player.doubleshoot()
         elif event.type==pygame.KEYUP: #shortcut untuk langsung gameover
             if event.key==pygame.K_2:
@@ -322,34 +324,48 @@ while running:
     hits=pygame.sprite.groupcollide(hazard,bullets,False,True)
 
     for hit in hits:
-        # Check if the hit is a rock
+        # cek apakah peluru mengenai batu
         if isinstance(hit, Rock):
             hit.kill()
             rock=Rock()
             all_sprites.add(rock)
             hazard.add(rock)
             player.score_val +=1
-            if player.score_val % 50 == 0:
-                test = Boss(100)
+            
+            if player.score_val % 30 == 0:
+                hp += 50 #setiap skor kelipatan 30 HP Boss bertambah 50
+                test = Boss(hp)
                 all_sprites.add(test)
                 hazard.add(test)
                 level += 1
-        elif isinstance(hit, Boss):
+        # cek apakah peluru mengenai Boss        
+        elif isinstance(hit, Boss): 
             hit.hurt()
         else:
             hit.kill()
-
-    hits = pygame.sprite.spritecollide(player,hazard,False,pygame.sprite.collide_circle)
-    # jika pesawat terkena meteor
-    if hits:
-        menuGameOver()  
-        game_over = True
-        running = True
-
+    # ketika level = 2 rock meluncur lebih cepat
+    if level == 2:
+        rock.speedx=random.randrange(-5,1)
+        rock.speedy=random.randrange(5,10)
+        
     layar.blit(pygame.transform.scale(image.background,(500,700)),(0,0))
+    draw_text(layar, f"Level {level}", 24, WIDTH/2, HEIGHT-590)
     all_sprites.draw(layar)
     player.show_score()
-    draw_text(layar, f"Level {level}", 24, WIDTH/2, HEIGHT-590)
+    player.show_lifepoints()
     pygame.display.update()
 
+    hits = pygame.sprite.spritecollide(player,hazard,False,pygame.sprite.collide_circle)
+    # jika pesawat terkena hit
+    for hit in hits:
+        if isinstance(hit, Rock):
+            hit.kill()
+            rock=Rock()
+            all_sprites.add(rock)
+            hazard.add(rock)
+            player.life -= 1
+        if player.life < 0:
+            game_over = True
+            menuGameOver() 
+        
 pygame.quit()
