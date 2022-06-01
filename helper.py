@@ -1,4 +1,6 @@
 import pygame
+pygame.init()
+pygame.font.init()
 
 GREEN = (0, 255, 0)
 
