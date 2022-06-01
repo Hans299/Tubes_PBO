@@ -16,7 +16,7 @@ pygame.display.set_caption("WATCHOUT!")
 fps = pygame.time.Clock()
 
 #Class Player(Class Child)
-Class Player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image.player,(60,65))
@@ -85,7 +85,7 @@ Class Player(pygame.sprite.Sprite):
         draw_text(layar, f"Score -> {self.score_val}", 24, WIDTH-450, HEIGHT-590)
 
 #Class Bullet(Class Child)
-Class Rock(pygame.sprite.Sprite):
+class Rock(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image.rock,(43,42))
@@ -105,7 +105,7 @@ Class Rock(pygame.sprite.Sprite):
             self.speedx=random.randrange(-3,3)
             self.speedy=random.randrange(2,8)
 #Class Powerup(Class Child)
-Class Power(pygame.sprite.Sprite):
+class Power(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(image.power,(20,20))
@@ -300,12 +300,12 @@ def menuGameOver():
                 if cek <= 70:
                     player.score_val = 0
                     waiting = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    xpos, ypos = pygame.mouse.get_pos()
-                    cek = math.sqrt((xvar - xpos)**2 + (520 - ypos)**2)
-                    if cek <= 25:
-                        pygame.quit()
-                        sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                xpos, ypos = pygame.mouse.get_pos()
+                cek = math.sqrt((xvar - xpos)**2 + (520 - ypos)**2)
+                if cek <= 25:
+                    pygame.quit()
+                    sys.exit()
                     
         pygame.display.update()
         
