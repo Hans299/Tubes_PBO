@@ -1,6 +1,5 @@
 import math
 import pygame, sys
-pygame.init()
 import random
 import image
 import sound
@@ -27,8 +26,17 @@ class Player(pygame.sprite.Sprite):
         self.speedx = 8
         self.score_val = 0
         self.life = 5
+        self.power = 1
+        self.power_time = pygame.time.get_ticks()
+        self.last_shot = pygame.time.get_ticks()
+        self.shoot_delay = 250
 
     def update(self):
+        
+        if self.power >= 2 and pygame.time.get_ticks() - self.power_time > 5000:
+            self.power -= 1
+            self.power_time = pygame.time.get_ticks()
+            
         key_pressed = pygame.key.get_pressed()
         if key_pressed[pygame.K_RIGHT]:
             self.rect.x += self.speedx
@@ -48,11 +56,27 @@ class Player(pygame.sprite.Sprite):
         if self.rect.top < 0:
             self.rect.top  = 0
 
+    def powerup(self):
+        self.power += 1
+        self.power_time = pygame.time.get_ticks()
+
     def shoot(self):
-        bullet = Bullet(pygame.Vector2(self.rect.centerx,self.rect.top))
-        all_sprites.add(bullet)
-        bullets.add(bullet)
-        sound.missile.play()
+        now = pygame.time.get_ticks()
+        if now - self.last_shot > self.shoot_delay:
+            self.last_shot = now
+            if self.power == 1:
+                bullet = Bullet(pygame.Vector2(self.rect.centerx,self.rect.top))
+                all_sprites.add(bullet)
+                bullets.add(bullet)
+                sound.missile.play()
+            elif self.power >= 2:
+                bullet1 = Bullet(pygame.Vector2(self.rect.centerx-20,self.rect.top))
+                all_sprites.add(bullet1)
+                bullets.add(bullet1)
+                bullet2 = Bullet(pygame.Vector2(self.rect.centerx+20,self.rect.top))
+                all_sprites.add(bullet2)
+                bullets.add(bullet2)
+                sound.missile.play()  
 
     def doubleshoot(self):
         bullet1 = Bullet(pygame.Vector2(self.rect.centerx-20,self.rect.top))
@@ -63,7 +87,6 @@ class Player(pygame.sprite.Sprite):
         bullets.add(bullet2)
         sound.missile.play()
     
-        
     def show_lifepoints(self):
         draw_text(layar, f"life points -> {self.life}", 24, WIDTH-70, HEIGHT-590)
 
@@ -74,7 +97,6 @@ class Rock(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image=pygame.transform.scale(image.rock,(43,42))
-
         self.rect=self.image.get_rect()
         self.radius=self.rect.width*0.1/2
         self.rect.x=random.randrange(0,WIDTH-self.rect.width)
@@ -90,6 +112,22 @@ class Rock(pygame.sprite.Sprite):
             self.rect.y=random.randrange(-100,-40)
             self.speedx=random.randrange(-3,3)
             self.speedy=random.randrange(2,8)
+
+class Power(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.transform.scale(image.power,(20,20))
+        self.rect = self.image.get_rect()
+        self.radius=self.rect.width*0.1/2
+        self.rect.x=random.randrange(0,WIDTH-self.rect.width)
+        #self.rect.y = random.randrange(-50,-10)
+        self.speedy = 5
+
+    def update(self):
+        self.rect.y += self.speedy
+        # kill if it moves off the top of the screen
+        if self.rect.top > HEIGHT:
+            self.kill()
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self,position:pygame.Vector2,angle:float=-90):
@@ -193,6 +231,7 @@ class Boss(pygame.sprite.Sprite):
     def kill(self):
         self.healthbar.kill()
         return super().kill()
+        
 
 #Tampilan kedua setelah menu()
 def waiting_screen():
@@ -271,11 +310,12 @@ def menuGameOver():
                     
         pygame.display.update()
         
+
 game_over = True
 running=True
 menu()
 hp = 0
-
+sound.bgmusic.play(loops=-1)        
 while running:
     fps.tick(FPS)
     # waiting screen ketika gameover dan akan memulai game
@@ -310,15 +350,16 @@ while running:
                 player.shoot()
             elif event.key==pygame.K_1: #cheat menambah skor dengan keyboard angka 1
                 player.score_val +=1
-            elif event.key==pygame.K_4: #cheat menambah skor +25 dengan keyboard angka 2
-                player.score_val +=25
-            elif event.key==pygame.K_3: #cheat menambah peluru menjadi 2
-                player.doubleshoot()
-        elif event.type==pygame.KEYUP: #shortcut untuk langsung gameover
-            if event.key==pygame.K_2:
+            elif event.key==pygame.K_2: #shorcut untuk langsung game over dengan keyboard angka 2
                 menuGameOver()  
                 game_over = True
-                running = True
+            elif event.key==pygame.K_3: #cheat menambah peluru menjadi 2 dengan keyboard angka 3
+                player.doubleshoot()
+            elif event.key==pygame.K_4: #cheat menambah skor +25 dengan keyboard angka 4
+                player.score_val +=25
+                
+        
+                
 
     all_sprites.update()
     hits=pygame.sprite.groupcollide(hazard,bullets,False,True)
@@ -326,6 +367,7 @@ while running:
     for hit in hits:
         # cek apakah peluru mengenai batu
         if isinstance(hit, Rock):
+            sound.exlp2.play()
             hit.kill()
             rock=Rock()
             all_sprites.add(rock)
@@ -334,17 +376,25 @@ while running:
             
             if player.score_val % 30 == 0:
                 hp += 50 #setiap skor kelipatan 30 HP Boss bertambah 50
-                test = Boss(hp)
-                all_sprites.add(test)
-                hazard.add(test)
+                boss = Boss(hp)
+                all_sprites.add(boss)
+                hazard.add(boss)
+                player.powerup()
                 level += 1
+                player.life += 1
+            elif player.score_val % 10 == 0:
+                power=Power()
+                all_sprites.add(power)
+                hazard.add(power)
+            
         # cek apakah peluru mengenai Boss        
         elif isinstance(hit, Boss): 
+            sound.exlp2.play()
             hit.hurt()
-        else:
-            hit.kill()
-    # ketika level = 2 rock meluncur lebih cepat
-    if level == 2:
+            
+        
+    # ketika level levih dari 2 rock meluncur lebih cepat
+    if level >= 2:
         rock.speedx=random.randrange(-5,1)
         rock.speedy=random.randrange(5,10)
         
@@ -359,14 +409,21 @@ while running:
     # jika pesawat terkena hit, life akan berkurang
     for hit in hits:
         if isinstance(hit, Rock):
+            sound.expl.play()
             hit.kill()
             rock=Rock()
             all_sprites.add(rock)
             hazard.add(rock)
             player.life -= 1
-        else:
+        elif isinstance(hit, Bullet):
+            sound.expl.play()
             hit.kill()
             player.life -= 1
+        else:
+            hit.kill()
+            sound.powerup.play()
+            player.powerup()
+             
         if player.life < 0:
             game_over = True
             menuGameOver() 
