@@ -77,15 +77,6 @@ class Player(pygame.sprite.Sprite):
                 all_sprites.add(bullet2)
                 bullets.add(bullet2)
                 sound.missile.play()  
-
-    def doubleshoot(self):
-        bullet1 = Bullet(pygame.Vector2(self.rect.centerx-20,self.rect.top))
-        all_sprites.add(bullet1)
-        bullets.add(bullet1)
-        bullet2 = Bullet(pygame.Vector2(self.rect.centerx+20,self.rect.top))
-        all_sprites.add(bullet2)
-        bullets.add(bullet2)
-        sound.missile.play()
     
     def show_lifepoints(self):
         draw_text(layar, f"life points -> {self.life}", 24, WIDTH-70, HEIGHT-590)
@@ -155,7 +146,7 @@ class Healthbar(pygame.sprite.Sprite):
 class Boss(pygame.sprite.Sprite):
     def __init__(self, max_health:int, attack_speed:int = 50):
         pygame.sprite.Sprite.__init__(self)
-        self.source_image = pygame.transform.rotate(pygame.transform.scale(image.player,(120,130)),-90)
+        self.source_image = pygame.transform.rotate(pygame.transform.scale(image.boss,(120,130)),90)
         self._angle = 180
         self.image = pygame.transform.rotate(self.source_image, self.angle)
         self.rect=self.image.get_rect()
@@ -354,7 +345,8 @@ while running:
                 menuGameOver()  
                 game_over = True
             elif event.key==pygame.K_3: #cheat menambah peluru menjadi 2 dengan keyboard angka 3
-                player.doubleshoot()
+                player.power=2
+                player.shoot()
             elif event.key==pygame.K_4: #cheat menambah skor +25 dengan keyboard angka 4
                 player.score_val +=25
                 
