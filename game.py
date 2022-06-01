@@ -356,7 +356,7 @@ while running:
     pygame.display.update()
 
     hits = pygame.sprite.spritecollide(player,hazard,False,pygame.sprite.collide_circle)
-    # jika pesawat terkena hit
+    # jika pesawat terkena hit, life akan berkurang
     for hit in hits:
         if isinstance(hit, Rock):
             hit.kill()
@@ -364,8 +364,12 @@ while running:
             all_sprites.add(rock)
             hazard.add(rock)
             player.life -= 1
+        else:
+            hit.kill()
+            player.life -= 1
         if player.life < 0:
             game_over = True
             menuGameOver() 
+        
         
 pygame.quit()
