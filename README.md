@@ -2,6 +2,16 @@
 # WATCHOUT!
 Pembuatan game watchout ini terinspirasi dari video game space invader yang mana pada video game ini terdapat sebuah pesawat yang akan melawan dengan cara menembaki elien atau musuh, namun pada game yang kami buat yaitu watchout kami mengganti musuh alien dengan menggunakan asteroid dan pesawat elien sebagai bos dari musuh.
 
+## Nama dan NIM Anggota Kelompok
+| Nama | NIM | Github |
+| :---: | :---: | :---: |
+| Faisal Khairul Fasha       | 120140158 | [faisalkfa](https://github.com/faisalkfa)                 |
+| Faustine Elvaretta Tambila | 120140157 | [Faustineelvaretta](https://github.com/Faustineelvaretta) |
+| Muhammad Hadi Arsa         | 120140150 | [HadiAr20](https://github.com/HadiAr20)                   |
+| Syafira Wulandari          | 120140142 | [syafirawulandari](https://github.com/syafirawulandari)   |
+| Hans Bonatua Batubara      | 120140131 | [Hans299](https://github.com/Hans299)                     |
+| Indra Jaya Putra           | 120140059 | [indraphy](https://github.com/indraphy)                   |
+
 ## Dependencies:
 pygame (https://www.pygame.org/) - Python game library
 abc (Abstract Base Class) (Built-in)
@@ -33,16 +43,6 @@ Press `SPACE` to fire.
 ![Power Up](./doc/powerup.jpeg)
 ![Melawan Boss](./doc/melawanboss.jpeg)
 ![Menu Game Over](./doc/menugameover.jpeg)
-
-## Nama dan NIM Anggota Kelompok
-| Nama | NIM | Github |
-| :---: | :---: | :---: |
-| Faisal Khairul Fasha       | 120140158 | [faisalkfa](https://github.com/faisalkfa)                 |
-| Faustine Elvaretta Tambila | 120140157 | [Faustineelvaretta](https://github.com/Faustineelvaretta) |
-| Muhammad Hadi Arsa         | 120140150 | [HadiAr20](https://github.com/HadiAr20)                   |
-| Syafira Wulandari          | 120140142 | [syafirawulandari](https://github.com/syafirawulandari)   |
-| Hans Bonatua Batubara      | 120140131 | [Hans299](https://github.com/Hans299)                     |
-| Indra Jaya Putra           | 120140059 | [indraphy](https://github.com/indraphy)                   |
 
 ## UML and Development:
 <!-- Show UML.png from ./UML.png -->
