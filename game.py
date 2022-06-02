@@ -134,7 +134,7 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.bottom < 0 or self.rect.top > HEIGHT or self.rect.left > WIDTH or self.rect.right < 0:
             self.kill()
 #Class Healthbar(Class Child)
-#Implementasi Enkapsulasi
+#Implementasi Polymorphism
 class Healthbar(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
