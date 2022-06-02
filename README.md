@@ -1,5 +1,6 @@
 # Tubes_PBO
 # WATCHOUT!
+Pembuatan game watchout ini terinspirasi dari video game space invader yang mana pada video game ini terdapat sebuah pesawat yang akan melawan dengan cara menembaki elien atau musuh, namun pada game yang kami buat yaitu watchout kami mengganti musuh alien dengan menggunakan asteroid dan pesawat elien sebagai bos dari musuh.
 
 ## Dependencies:
 pygame (https://www.pygame.org/) - Python game library
