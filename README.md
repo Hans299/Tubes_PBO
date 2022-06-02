@@ -11,7 +11,7 @@ Press `←` to move left.
 Press `→` to move right.
 Press `↑` to move up.
 Press `↓` to move down.
-Press `SPACE` or `MOUSE LEFT CLICK` to fire.
+Press `SPACE` to fire.
 
 ## Installation:
 1. Install Python 3.8+ (https://www.python.org/downloads/)
@@ -25,6 +25,13 @@ Press `SPACE` or `MOUSE LEFT CLICK` to fire.
     - "pip install -r requirements.txt"
 5. Run the game:
     - "python game.py"
+
+## Documentation
+![Menu Start](./doc/menustart.jpeg)
+![Menu Awal](./doc/menuawal.jpeg)
+![Power Up](./doc/powerup.jpeg)
+![Melawan Boss](./doc/melawanboss.jpeg)
+![Menu Game Over](./doc/menugameover.jpeg)
 
 ## Nama dan NIM Anggota Kelompok
 | Nama | NIM | Github |
