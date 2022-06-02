@@ -1,10 +1,10 @@
-import math
-import pygame, sys
-import random
-import image
-import sound
+import math  #Modul math untuk melakukan operasi matematika
+import pygame, sys #Modul yang menjadi dasar dari game, berperan sebagai class parent
+import random #Modul random untuk mengacak posisi musuh
+import image #Modul yang berisi file gambar
+import sound #Modul sound untuk mengatur suara melalui file sound
 from helper import draw_text
-
+#fitur pembangun game
 FPS=60
 WIDTH=500
 HEIGHT=600
