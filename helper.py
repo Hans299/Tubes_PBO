@@ -1,4 +1,4 @@
-import pygame
+import pygame #modul python
 pygame.init()
 pygame.font.init()
 
